@@ -100,7 +100,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 81
+  controlID: 101
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_MinSize: {x: 707, y: 492}
   m_MaxSize: {x: 18003, y: 14042}
   vertical: 0
-  controlID: 120
+  controlID: 95
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 321}
   m_MaxSize: {x: 4001, y: 8021}
   vertical: 1
-  controlID: 129
+  controlID: 140
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -360,7 +360,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 00d2ffff1ed2ffff72d3ffffb8d3ffffeed3ffff1cd4ffff14d5ffffc0e1ffff88e5ffff98e5ffffaae5ffff00e8ffff0ae8ffff4ce8fffff2eeffffe4efffff04f0ffff08f1ffff2af1ffff52f3ffff5cf3ffff76f3ffffa4f6ffffccf6ffff5cf7ffffc0f7ffff16f8ffff74f8ffffc6f8ffff06f9ffff0efaffffaa400000004200001a42000034420000c2420000d2420000f2420000
+      m_ExpandedIDs: b496ffffa498ffffd69cffffb49dffffdc9dffff009effff3c9fffff609fffff40a1ffff42a5ffff36a6ffffb8a6ffffe0a6ffffd6a7fffff8a7ffff12a9ffff76abffff26acffffb0acffffd2acfffffaacffff1eadffff42adffff80adffffcaadfffff2adffff2eaeffff6aaeffff28afffff46afffff64afffffe6cafffffaccffff94cdffffbacdffffd4ceffffd4d0ffff00d1ffffaed1ffff30d2ffffa0d8ffff94e3ffffbee3ffff44e5ffff66e5ffff88e5ffffb2e5ffffcee7ffffece7ffff4ee9ffffbaedffffc4edffffd2edfffff4edffff12eeffff30eeffff4aeeffff2ef5ffff00f9fffffef9ffffaa400000bc4000007a54000092540000a65400002255000056560000e0560000105800009a590000b8590000c2590000d45a0000f25a0000185b0000745c00008c5c00002c5e00007e5f0000d46000001461000094620000ae620000c4620000ce620000e87800000e79000086790000a4790000ae790000767a00009c7a0000427b0000fa7b00003a7c00000a7d0000307d0000c47d0000047e0000d47e0000ec7e0000f47e0000007f0000247f000068800000a0800000b28000008a82000096820000b2820000bc820000d08200001083000010850000368500004c85000058850000ee8500000c86000016860000648900008a890000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -467,14 +467,14 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/Scenes
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: D:\Git Repos\CIT419\Are You Not Entertained
+  m_LastProjectPath: C:\Users\biote\Documents\GitHub\CIT419\Are You Not Entertained
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 2a400000
-    m_LastClickedID: 16426
-    m_ExpandedIDs: 000000002040000000ca9a3b
+    m_SelectedIDs: 3a400000
+    m_LastClickedID: 16442
+    m_ExpandedIDs: 000000003640000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -502,7 +502,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000020400000
+    m_ExpandedIDs: 0000000036400000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -533,15 +533,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: ExitButton
-      m_OriginalName: ExitButton
+      m_Name: GoToDeathScreen
+      m_OriginalName: GoToDeathScreen
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 2758
+      m_UserData: 35258
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -683,9 +683,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 223.5, y: 169.5, z: 0}
+    m_Target: {x: 450, y: 209.5, z: 0}
     speed: 2
-    m_Value: {x: 223.5, y: 169.5, z: 0}
+    m_Value: {x: 450, y: 209.5, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -736,9 +736,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0.0026903285, y: -0.0039021103, z: -0.000010315187, w: -0.99998885}
   m_Size:
-    m_Target: 363.5355
+    m_Target: 496.37714
     speed: 2
-    m_Value: 363.5355
+    m_Value: 496.37714
   m_Ortho:
     m_Target: 0
     speed: 2
