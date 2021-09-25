@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Arena
   - Cover
+  - Overhead
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Terrain
   - 
   - 
   - 

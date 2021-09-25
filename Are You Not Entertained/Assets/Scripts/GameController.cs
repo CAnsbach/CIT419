@@ -51,4 +51,6 @@ public class GameController : MonoBehaviour
 
         DontDestroyOnLoad(this);
     }
+
+    public bool paused;
 }

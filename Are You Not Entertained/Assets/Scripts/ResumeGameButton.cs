@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class ResumeGameButton : MonoBehaviour
 {
+    GameController gc;
     GameObject pauseMenu;
 
     void Start()
     {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         pauseMenu = GameObject.FindGameObjectWithTag("PauseMenu").gameObject;
 
         Button btn = GetComponent<Button>();
@@ -19,6 +21,7 @@ public class ResumeGameButton : MonoBehaviour
     void ResumeGame()
     {
         Time.timeScale = 1;
+        gc.paused = false;
         pauseMenu.SetActive(false);
     }
 }

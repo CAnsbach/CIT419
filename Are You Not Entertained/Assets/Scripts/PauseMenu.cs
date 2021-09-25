@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     GameObject pauseMenu;
+    GameController gc;
 
     void Start()
     {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         pauseMenu = GameObject.FindGameObjectWithTag("PauseMenu").gameObject;
 
         pauseMenu.SetActive(false);
@@ -33,12 +35,14 @@ public class PauseMenu : MonoBehaviour
     void OpenPauseMenu()
     {
         Time.timeScale = 0;
+        gc.paused = true;
         pauseMenu.SetActive(true);
     }
 
     void ClosePauseMenu()
     {
         Time.timeScale = 1;
+        gc.paused = false;
         pauseMenu.SetActive(false);
     }
 }
