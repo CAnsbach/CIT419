@@ -5,10 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform target;
-    float smoothSpeed = 0.125f;
     Vector3 offset = new Vector3(0.0f, 20.0f, 0f);
-
-
 
     private void LateUpdate()
     {

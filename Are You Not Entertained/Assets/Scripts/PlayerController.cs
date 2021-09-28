@@ -7,35 +7,45 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask _aimLayerMask;
     GameController gc;
     public Camera camera;
+    public Transform firingPoint;
+    public GameObject bullet;
 
-    float xDirection, yDirection;
     const float speed = 5.0f;
-    int health;
-
+    int health = 100;
 
     CharacterController controller;
-    Quaternion targetRotation;
-
-    Vector3 mousePosition;
 
     Vector3 velocity;
 
     private void Start()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();        
         controller = gameObject.AddComponent<CharacterController>();
     }
 
     private void Update()
     {
 
-        Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        if(health <= 0)
+        {
+            Dead();
+        }
 
-        controller.Move(moveDirection * Time.deltaTime * speed);
+        else
+        {
+            Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
 
-        velocity.y += -9.81f * Time.deltaTime;
+            controller.Move(moveDirection * Time.deltaTime * speed);
 
-        controller.Move(velocity * Time.deltaTime);
+            velocity.y += -9.81f * Time.deltaTime;
+
+            controller.Move(velocity * Time.deltaTime);
+
+            if(Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Instantiate(bullet, transform.position, transform.rotation);
+            }
+        }
     }
 
     private void LateUpdate()
@@ -59,5 +69,23 @@ public class PlayerController : MonoBehaviour
             direction.Normalize();
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (damage >= health)
+        {
+            health = 0;
+            Dead();
+        }
+        else
+        {
+            health -= damage;
+        }
+    }
+
+    void Dead()
+    {
+        gc.PlayerDeath();
     }
 }

@@ -6,15 +6,20 @@ using UnityEngine.UI;
 
 public class BackToMenuButton : MonoBehaviour
 {
+    GameController gc;
+
     void Start()
     {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Button btn = GetComponent<Button>();
 
-        btn.onClick.AddListener(StartGame);
+        btn.onClick.AddListener(GoToMainMenu);
     }
 
-    void StartGame()
+    void GoToMainMenu()
     {
+        Time.timeScale = 1;
+        gc.paused = false;
         SceneManager.LoadScene("MainMenu");
     }
 }

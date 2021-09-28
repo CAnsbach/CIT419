@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class GameController : MonoBehaviour
         this.password = password;
     }
 
+    private int score;
+
+    public bool paused;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -52,5 +57,14 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public bool paused;
+    public void PlayerDeath()
+    {
+        SceneManager.LoadScene("DeathScene");
+    }
+
+    public void UpdateScore(int score)
+    {
+        this.score += score;
+    }
+
 }
