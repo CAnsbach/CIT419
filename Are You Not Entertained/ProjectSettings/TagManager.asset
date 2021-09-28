@@ -10,6 +10,10 @@ TagManager:
   - Arena
   - Cover
   - Overhead
+  - FiringPoint
+  - EnemyMelee
+  - EnemyRanged
+  - MLBoss
   layers:
   - Default
   - TransparentFX

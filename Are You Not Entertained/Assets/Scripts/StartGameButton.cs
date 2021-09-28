@@ -6,15 +6,17 @@ using UnityEngine.UI;
 
 public class StartGameButton : MonoBehaviour
 {
+    GameController gc;
     void Start()
     {
         Button btn = GetComponent<Button>();
+        gc = GameObject.Find("GameController").GetComponent<GameController>();
 
         btn.onClick.AddListener(StartGame);
     }
 
     void StartGame()
     {
-        SceneManager.LoadScene("Game");
+        gc.GameStart(); 
     }
 }

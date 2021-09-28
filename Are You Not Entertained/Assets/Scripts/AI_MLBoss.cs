@@ -6,7 +6,7 @@ public class AI_MLBoss : MonoBehaviour
 {
     GameController gc;
     int health = 150;
-    int score = 10;
+    int score = 100;
 
     private void Start()
     {
@@ -30,6 +30,7 @@ public class AI_MLBoss : MonoBehaviour
     {
         Debug.Log("Dieing");
         gc.UpdateScore(score);
-        Destroy(this);
+        Debug.Log("Score is now: " + gc.GetScore());
+        Destroy(gameObject);
     }
 }

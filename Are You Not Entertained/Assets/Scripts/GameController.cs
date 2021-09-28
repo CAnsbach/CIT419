@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class GameController : MonoBehaviour
 
     public void PlayerDeath()
     {
-        SceneManager.LoadScene("DeathScene");
+        SceneManager.LoadScene("DeathScreen");
     }
 
     public void UpdateScore(int score)
@@ -67,4 +68,15 @@ public class GameController : MonoBehaviour
         this.score += score;
     }
 
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void GameStart()
+    {
+        score = 0;
+
+        SceneManager.LoadScene("Game");
+    }
 }

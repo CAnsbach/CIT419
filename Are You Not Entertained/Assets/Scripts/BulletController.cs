@@ -8,7 +8,7 @@ public class BulletController : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(transform.forward * Time.deltaTime);
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -16,24 +16,29 @@ public class BulletController : MonoBehaviour
         if (collision.gameObject.tag.Equals("EnemyMelee"))
         {
             collision.gameObject.GetComponent<AI_BasicMelee>().Hit(damage);
-            Destroy(this);
+            Gone();
         }
 
         else if (collision.gameObject.tag.Equals("EnemyRanged"))
         {
             collision.gameObject.GetComponent<AI_BasicRanged>().Hit(damage);
-            Destroy(this);
+            Gone();
         }
 
         else if (collision.gameObject.tag.Equals("MLBoss"))
         {
             collision.gameObject.GetComponent<AI_MLBoss>().Hit(damage);
-            Destroy(this);
+            Gone();
         }
         else
         {
             Debug.Log("I hit: " + collision.gameObject.tag);
-            Destroy(this);
+            Gone();
         }
+    }
+
+    void Gone()
+    {
+        Destroy(gameObject);
     }
 }
