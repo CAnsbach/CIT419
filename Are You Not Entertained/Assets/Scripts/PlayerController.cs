@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
     public Transform firingPoint;
     public GameObject bullet;
     
-    const float speed = 5.0f, blockCooldown = 10.0f, blockDuration = 6.0f, meleeRange = 2.0f;//, damageRate = 1.0f;
-    public bool canBlock = true, blocking = false;//, takeDamage = true;
+    const float speed = 5.0f, blockCooldown = 10.0f, blockDuration = 6.0f, meleeRange = 2.0f;
+    public bool canBlock = true, blocking = false;
     int health = 100;
     const int meleeDamage = 30;
     float stopWatch, blockStop, damageAgain;
@@ -24,17 +24,10 @@ public class PlayerController : MonoBehaviour
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();        
         controller = gameObject.AddComponent<CharacterController>();
-        //DamageMe();
     }
 
     private void Update()
     {
-        //if(!takeDamage && Time.time > damageAgain)
-        //{
-        //    takeDamage = true;
-        //    DamageMe();
-        //}
-
         if (!canBlock && Time.time > stopWatch)
         {
             canBlock = true;
@@ -75,6 +68,11 @@ public class PlayerController : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.LeftShift) && canBlock)
             {
                 BlockAbility();
+            }
+
+            if(Input.GetKeyDown(KeyCode.F))
+            {
+                Dead();
             }
 
 
@@ -178,14 +176,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Blocked Damage");
         }
     }
-
-    //void DamageMe()
-    //{
-    //    TakeDamage(10);
-    //    takeDamage = false;
-
-    //    damageAgain = Time.time + damageRate;
-    //}
 
     void Dead()
     {

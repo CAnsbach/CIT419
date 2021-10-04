@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UserLogin : MonoBehaviour
 {
     public Button login;
-    private string loginurl = "https://citcapstones.com/CIT419/php/gameupdatehighscores.php";
+    private string loginurl = "https://citcapstones.com/CIT419/php/gameuserlogin.php";
     public GameObject username, password;
     private string usernameString, passwordString;
     public Text usernameInfo;
@@ -31,6 +31,7 @@ public class UserLogin : MonoBehaviour
 
     IEnumerator Upload()
     {
+        Debug.Log("Logging User In");
         usernameString = this.username.GetComponent<TMP_InputField>().text;
         passwordString = this.password.GetComponent<TMP_InputField>().text;
 

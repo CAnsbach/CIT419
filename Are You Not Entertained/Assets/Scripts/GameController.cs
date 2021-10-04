@@ -42,7 +42,13 @@ public class GameController : MonoBehaviour
 
     private int score;
 
-    public bool paused;
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public bool paused, updateScore;
+
 
     private void Awake()
     {
@@ -58,19 +64,17 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+
+
     public void PlayerDeath()
     {
+        updateScore = true;
         SceneManager.LoadScene("DeathScreen");
     }
 
     public void UpdateScore(int score)
     {
         this.score += score;
-    }
-
-    public int GetScore()
-    {
-        return score;
     }
 
     public void GameStart()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AI_GeneralController : MonoBehaviour
 {
-    GameController gc;
+    public GameController gc;
     int health = 50;
     int score = 10;
 
@@ -26,7 +26,7 @@ public class AI_GeneralController : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         Debug.Log("Dieing");
         gc.UpdateScore(score);
