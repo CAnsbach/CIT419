@@ -9,15 +9,16 @@ using UnityEngine.UI;
 public class UserLogin : MonoBehaviour
 {
     public Button login;
-    private string loginurl = "https://citcapstones.com/CIT419/php/gameuserlogin.php";
+    private string loginurl = "https://citcapstones.com/CIT419/php/gameupdatehighscores.php";
     public GameObject username, password;
     private string usernameString, passwordString;
     public Text usernameInfo;
 
-    public GameController gc;
+    GameController gc;
 
     void Start()
     {
+        gc = gc = GameObject.Find("GameController").GetComponent<GameController>();
         Button btn = login.GetComponent<Button>();
         
         btn.onClick.AddListener(Login);
