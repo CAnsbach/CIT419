@@ -116,9 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         GameObject bulletGO = Instantiate(bullet, firingPoint.position, Quaternion.identity);
 
-        Rigidbody bulletRB = bulletGO.GetComponent<Rigidbody>();
-
-        bulletRB.AddForce(firingPoint.forward * 20f, ForceMode.Impulse);
+        bulletGO.transform.forward = firingPoint.forward;
     }
 
     void SwordStrike()

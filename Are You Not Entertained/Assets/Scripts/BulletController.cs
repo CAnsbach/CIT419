@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
+
     const int damage = 10;
 
     void Update()
     {
-        
+        transform.position = transform.position + transform.forward * 20f * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)

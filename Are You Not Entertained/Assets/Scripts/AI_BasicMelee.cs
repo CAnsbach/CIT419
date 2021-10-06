@@ -8,7 +8,7 @@ public class AI_BasicMelee : AI_GeneralController
 {
     public enum State { Chase, Attack };
     public State currentState;
-    int damage;
+    int damage = 10;
 
     GameObject player;
     Transform playerT;
@@ -19,7 +19,7 @@ public class AI_BasicMelee : AI_GeneralController
         player = GameObject.FindGameObjectWithTag("Player");
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
-        currentState = State.Chase;
+        ChangeStates(State.Chase);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,6 +58,7 @@ public class AI_BasicMelee : AI_GeneralController
     {
         while (currentState == State.Chase && player != null)
         {
+            Debug.Log("Chasing");
             try
             {
                 agent.SetDestination(playerT.position);
@@ -66,6 +67,7 @@ public class AI_BasicMelee : AI_GeneralController
             {
                 Debug.Log(e.Message);
             }
+
             yield return new WaitForSeconds(.2f);
         }
         yield return null;
@@ -73,6 +75,7 @@ public class AI_BasicMelee : AI_GeneralController
 
     IEnumerator AI_Attack()
     {
+        Debug.Log("Attacking");
         agent.SetDestination(gameObject.transform.position);
 
         while (currentState == State.Attack && player != null)
