@@ -25,7 +25,7 @@ public class AI_BasicRanged : AI_GeneralController
         ChangeStates(State.Chase);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Physics.Raycast(shooter.position, shooter.forward, out check, 8f))
         {
@@ -34,6 +34,8 @@ public class AI_BasicRanged : AI_GeneralController
                 ChangeStates(State.Shoot);
             }
         }
+
+        Debug.DrawRay(shooter.position, shooter.forward, Color.red);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -136,9 +138,7 @@ public class AI_BasicRanged : AI_GeneralController
 
                 GameObject bulletGO = Instantiate(bullet, shooter.position, Quaternion.identity);
 
-                Rigidbody bulletRB = bulletGO.GetComponent<Rigidbody>();
-
-                bulletRB.AddForce(shooter.forward * 20f, ForceMode.Impulse);
+                bulletGO.transform.forward = shooter.forward;
 
                 transform.LookAt(player.transform.position);
             }
@@ -146,7 +146,7 @@ public class AI_BasicRanged : AI_GeneralController
             {
                 transform.LookAt(player.transform.position);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.2f);
 
             transform.LookAt(player.transform.position);
         }

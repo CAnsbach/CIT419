@@ -6,6 +6,11 @@ public class EnemyBulletController : MonoBehaviour
 {
     const int damage = 5;
 
+    void Update()
+    {
+        transform.position = transform.position + transform.forward * 20f * Time.deltaTime;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Player"))
