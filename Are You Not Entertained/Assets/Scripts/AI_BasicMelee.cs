@@ -58,7 +58,6 @@ public class AI_BasicMelee : AI_GeneralController
     {
         while (currentState == State.Chase && player != null)
         {
-            Debug.Log("Chasing");
             try
             {
                 agent.SetDestination(playerT.position);
@@ -75,7 +74,6 @@ public class AI_BasicMelee : AI_GeneralController
 
     IEnumerator AI_Attack()
     {
-        Debug.Log("Attacking");
         agent.SetDestination(gameObject.transform.position);
 
         while (currentState == State.Attack && player != null)

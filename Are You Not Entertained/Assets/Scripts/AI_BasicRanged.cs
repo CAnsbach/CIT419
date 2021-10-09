@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class AI_BasicRanged : AI_GeneralController
 {
-    public enum State { Chase, Attack, Shoot};
+    public enum State { Chase, Shoot};
     public State currentState;
     public GameObject bullet;
     public Transform shooter;
@@ -27,42 +27,22 @@ public class AI_BasicRanged : AI_GeneralController
 
     private void FixedUpdate()
     {
-        if (Physics.Raycast(shooter.position, shooter.forward, out check, 8f))
+        float distance = Vector3.Distance(playerT.position, transform.position);
+
+        if (distance <= 10f && currentState != State.Shoot)
         {
-            if (check.collider.gameObject.CompareTag("Player") && currentState != State.Shoot)
-            {
-                ChangeStates(State.Shoot);
-            }
+            ChangeStates(State.Shoot);
         }
-
-        Debug.DrawRay(shooter.position, shooter.forward, Color.red);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            ChangeStates(State.Attack);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        else if (distance > 10f && currentState != State.Chase)
         {
             ChangeStates(State.Chase);
         }
     }
 
+
     private void ChangeStates(State current)
     {
-        if (current == State.Attack)
-        {
-            currentState = State.Attack;
-            StopAllCoroutines();
-            StartCoroutine("AI_Attack");
-        }
-        else if (current == State.Chase)
+        if (current == State.Chase)
         {
             currentState = State.Chase;
             StopAllCoroutines();
@@ -78,12 +58,13 @@ public class AI_BasicRanged : AI_GeneralController
 
     IEnumerator AI_Chase()
     {
+        agent.isStopped = false;
         while (currentState == State.Chase && player != null)
         {
-            Debug.Log("Chasing");
             try
             {
                 agent.SetDestination(playerT.position);
+                transform.LookAt(player.transform.position);
             }
             catch (Exception e)
             {
@@ -95,63 +76,22 @@ public class AI_BasicRanged : AI_GeneralController
         yield return null;
     }
 
-    IEnumerator AI_Attack()
-    {
-        try
-        {
-            agent.SetDestination(playerT.position);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
-
-        transform.LookAt(player.transform.position);
-
-        while (currentState == State.Attack && player != null)
-        {
-            Debug.Log("Attacking");
-            player.GetComponent<PlayerController>().TakeDamage(damage);
-            yield return new WaitForSeconds(.5f);
-        }
-        yield return null;
-    }
-
     IEnumerator AI_Shoot()
     {
-        try
+        agent.isStopped = true;
+        while (player != null)
         {
-            agent.SetDestination(playerT.position);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
-        transform.LookAt(player.transform.position);
+            transform.LookAt(player.transform.position);
 
-        while (Physics.Raycast(shooter.position, shooter.forward, out check, 20f) && player != null)
-        {
-            Debug.Log("Shooting");
-            if (check.collider.gameObject.CompareTag("Player"))
-            {
-                agent.SetDestination(gameObject.transform.position);
+            GameObject bulletGO = Instantiate(bullet, shooter.position, Quaternion.identity);
 
-                GameObject bulletGO = Instantiate(bullet, shooter.position, Quaternion.identity);
+            bulletGO.transform.forward = shooter.forward;
 
-                bulletGO.transform.forward = shooter.forward;
-
-                transform.LookAt(player.transform.position);
-            }
-            else
-            {
-                transform.LookAt(player.transform.position);
-            }
             yield return new WaitForSeconds(.2f);
 
             transform.LookAt(player.transform.position);
         }
 
-        ChangeStates(State.Chase);
         yield return null;
     }
 }

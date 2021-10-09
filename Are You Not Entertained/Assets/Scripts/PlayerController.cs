@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,9 +10,10 @@ public class PlayerController : MonoBehaviour
     public Camera camera;
     public Transform firingPoint;
     public GameObject bullet;
-    
+    public TMP_Text healthTxt;
+
     const float speed = 5.0f, blockCooldown = 10.0f, blockDuration = 6.0f, meleeRange = 2.0f;
-    public bool canBlock = true, blocking = false;
+    bool canBlock = true, blocking = false;
     int health = 100;
     const int meleeDamage = 30;
     float stopWatch, blockStop, damageAgain;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();        
         controller = gameObject.AddComponent<CharacterController>();
+        healthTxt.text = "Health: " + health;
     }
 
     private void Update()
@@ -74,8 +77,6 @@ public class PlayerController : MonoBehaviour
             {
                 Dead();
             }
-
-
         }
     }
 
@@ -165,7 +166,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 health -= damage;
-                Debug.Log(health);
+                healthTxt.text = "Health: " + health;
             }
         }
 

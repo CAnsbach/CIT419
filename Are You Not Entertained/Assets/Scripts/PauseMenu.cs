@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    GameObject pauseMenu;
+    GameObject pauseMenu, gameUI;
     GameController gc;
 
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         pauseMenu = GameObject.FindGameObjectWithTag("PauseMenu").gameObject;
+        gameUI = GameObject.FindGameObjectWithTag("GameUI").gameObject;
 
         pauseMenu.SetActive(false);
     }
@@ -36,6 +37,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 0;
         gc.paused = true;
+        gameUI.GetComponentInChildren<TMP_Text>().alpha = .2f;
         pauseMenu.SetActive(true);
     }
 
@@ -43,6 +45,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         gc.paused = false;
+        gameUI.GetComponentInChildren<TMP_Text>().alpha = 1f;
         pauseMenu.SetActive(false);
     }
 }
