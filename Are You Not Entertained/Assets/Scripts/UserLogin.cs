@@ -53,7 +53,6 @@ public class UserLogin : MonoBehaviour
                 if (result.Equals("login successful for user"))
                 {
                     gc.setUsername(usernameString);
-                    gc.setPassword(passwordString);
 
                     SceneManager.LoadScene("MainMenu");
                     

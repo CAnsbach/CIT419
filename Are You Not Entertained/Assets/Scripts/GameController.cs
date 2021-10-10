@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
         } 
     }
 
-    private string username;
+    private string username = "iliketurtles12343";
 
     public string getUsername()
     {
@@ -26,18 +26,6 @@ public class GameController : MonoBehaviour
     public void setUsername(string username)
     {
         this.username = username;
-    }
-
-    private string password;
-
-    public string getPassword()
-    {
-        return password;
-    }
-
-    public void setPassword(string password)
-    {
-        this.password = password;
     }
 
     private int score;
