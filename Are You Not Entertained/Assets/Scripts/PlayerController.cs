@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     bool canBlock = true, blocking = false;
     int health = 100;
     const int meleeDamage = 30;
-    float stopWatch, blockStop, damageAgain;
+    float stopWatch, blockStop;
 
     CharacterController controller;
 

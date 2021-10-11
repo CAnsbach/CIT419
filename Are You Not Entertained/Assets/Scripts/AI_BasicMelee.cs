@@ -10,13 +10,13 @@ public class AI_BasicMelee : AI_GeneralController
     public State currentState;
     int damage = 10;
 
-    GameObject player;
+    public GameObject player;
     Transform playerT;
     NavMeshAgent agent;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);
@@ -24,7 +24,7 @@ public class AI_BasicMelee : AI_GeneralController
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MLBoss"))
         {
             ChangeStates(State.Attack);
         }
@@ -32,7 +32,7 @@ public class AI_BasicMelee : AI_GeneralController
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MLBoss"))
         {
             ChangeStates(State.Chase);
         }
@@ -78,8 +78,20 @@ public class AI_BasicMelee : AI_GeneralController
 
         while (currentState == State.Attack && player != null)
         {
-            player.GetComponent<PlayerController>().TakeDamage(damage);
+            if (player.CompareTag("Player"))
+            {
+                player.GetComponent<PlayerController>().TakeDamage(damage);
+                
+            }
+
+            else
+            {
+                Debug.Log("Attacking " + player.tag);
+                player.GetComponent<AI_MLABoss>().Hit(damage);
+            }
+
             yield return new WaitForSeconds(.5f);
+
         }
         yield return null;
     }

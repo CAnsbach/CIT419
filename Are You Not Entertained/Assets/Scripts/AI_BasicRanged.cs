@@ -13,9 +13,7 @@ public class AI_BasicRanged : AI_GeneralController
 
     GameObject player;
     Transform playerT;
-    RaycastHit check;
     NavMeshAgent agent;
-    int damage = 5;
 
     private void Start()
     {

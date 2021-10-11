@@ -15,6 +15,7 @@ TagManager:
   - EnemyRanged
   - MLBoss
   - GameUI
+  - TestEnemy
   layers:
   - Default
   - TransparentFX
