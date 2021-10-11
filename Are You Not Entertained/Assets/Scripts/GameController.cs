@@ -71,4 +71,12 @@ public class GameController : MonoBehaviour
 
         SceneManager.LoadScene("Game");
     }
+
+    public void NextWave()
+    {
+        foreach (GameObject spawner in GameObject.FindGameObjectsWithTag("Spawner"))
+        {
+            spawner.GetComponent<Spawner>().SpawnEnemy();
+        }
+    }
 }

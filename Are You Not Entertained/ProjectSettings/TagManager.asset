@@ -16,6 +16,7 @@ TagManager:
   - MLBoss
   - GameUI
   - TestEnemy
+  - Spawner
   layers:
   - Default
   - TransparentFX

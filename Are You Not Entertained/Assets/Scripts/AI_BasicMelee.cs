@@ -16,7 +16,7 @@ public class AI_BasicMelee : AI_GeneralController
 
     private void Start()
     {
-        //player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("MLBoss");
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);

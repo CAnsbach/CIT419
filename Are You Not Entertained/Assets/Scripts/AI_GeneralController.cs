@@ -8,7 +8,7 @@ public class AI_GeneralController : MonoBehaviour
     int health = 50;
     int score = 10;
 
-    private void Start()
+    private void Awake()
     {
         gc = gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }

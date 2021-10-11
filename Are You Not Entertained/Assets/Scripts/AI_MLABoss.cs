@@ -8,12 +8,15 @@ using Unity.MLAgents.Sensors;
 public class AI_MLABoss : Agent
 {
     [SerializeField] private Transform target;
-    
+    [SerializeField] private Material win;
+    [SerializeField] private Material lose;
+    [SerializeField] private Material defaultMat;
+    [SerializeField] private MeshRenderer floorMeshRenderer;
     public enum State { Chase, Attack };
     State currentState;
 
     public GameController gc;
-    int health = 150, score = 100;
+    public int health, score = 100;
     const int damage = 10;
     bool canBlock = true;
     bool blocking = false;
@@ -57,13 +60,26 @@ public class AI_MLABoss : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.position = new Vector3(-4.34f, 1f, 0f);
+        Debug.Log("Episode Begin");
+        transform.position = new Vector3(-43.6f, 0.5f, 41.4f);
+        health = 100;
+        floorMeshRenderer.material = defaultMat;
+        gc.NextWave();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        if (target == null)
+        {
+            target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
+
+            sensor.AddObservation(target.position);
+        }
+        else
+        {
+            sensor.AddObservation(target.position);
+        }
         sensor.AddObservation(transform.position);
-        sensor.AddObservation(target.position);
         sensor.AddObservation(enemyInRange);
     }
 
@@ -71,8 +87,6 @@ public class AI_MLABoss : Agent
     {
         x = actions.ContinuousActions[0];
         z = actions.ContinuousActions[1];
-
-        Debug.Log(x + ", " + z);
 
         currentDistance = Vector3.Distance(transform.position, target.position);
 
@@ -128,6 +142,10 @@ public class AI_MLABoss : Agent
                 {
                     EnemyKilled();
                 }
+                else
+                {
+                    target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
+                }
             }
             AddReward(10f);
         }
@@ -136,9 +154,11 @@ public class AI_MLABoss : Agent
     void Chase()
     {
         //Chase the enemy, punish if moving away, reward if getting closer.
-        float moveSpeed = 1;
+        float moveSpeed = 2f;
 
         transform.position += new Vector3(x, 0, z) * Time.deltaTime * moveSpeed;
+
+        transform.LookAt(target.position);
 
         //If you are moving away, punish
         if (Vector3.Distance(transform.position, target.position) > currentDistance)
@@ -178,7 +198,14 @@ public class AI_MLABoss : Agent
     void Die()
     {
         Debug.Log("Dieing");
+        floorMeshRenderer.material = lose;
         SetReward(-100f);
+
+        foreach(GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+        {
+            Destroy(enemies);
+        }
+
         EndEpisode();
 
         //gc.UpdateScore(score);
@@ -188,7 +215,14 @@ public class AI_MLABoss : Agent
 
     void EnemyKilled()
     {
+        floorMeshRenderer.material = win;
         SetReward(100f);
+
+        foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+        {
+            Destroy(enemies);
+        }
+
         EndEpisode();
     }
 
