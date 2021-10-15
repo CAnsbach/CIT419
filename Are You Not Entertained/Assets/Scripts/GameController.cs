@@ -79,4 +79,12 @@ public class GameController : MonoBehaviour
             spawner.GetComponent<Spawner>().SpawnEnemy();
         }
     }
+
+    public void NextTrainingWave()
+    {
+        GameObject[] enemySpawners = GameObject.FindGameObjectsWithTag("Spawner");
+
+        enemySpawners[Random.Range(0, enemySpawners.Length)].GetComponent<Spawner>().SpawnEnemy();
+
+    }
 }

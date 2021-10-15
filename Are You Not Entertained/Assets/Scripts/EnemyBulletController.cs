@@ -6,6 +6,11 @@ public class EnemyBulletController : MonoBehaviour
 {
     const int damage = 5;
 
+    private void Start()
+    {
+        Destroy(gameObject, 15f);
+    }
+
     void Update()
     {
         transform.position = transform.position + transform.forward * 20f * Time.deltaTime;
@@ -18,9 +23,13 @@ public class EnemyBulletController : MonoBehaviour
             collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
             Gone();
         }
+        else if (collision.gameObject.tag.Equals("MLBoss"))
+        {
+            collision.gameObject.GetComponent<AI_MLABoss>().Hit(damage);
+            Gone();
+        }
         else
         {
-            Debug.Log("I hit: " + collision.gameObject.tag);
             Gone();
         }
     }

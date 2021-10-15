@@ -86,7 +86,7 @@ public class AI_BasicMelee : AI_GeneralController
 
             else
             {
-                Debug.Log("Attacking " + player.tag);
+                //Debug.Log("Attacking " + player.tag);
                 player.GetComponent<AI_MLABoss>().Hit(damage);
             }
 

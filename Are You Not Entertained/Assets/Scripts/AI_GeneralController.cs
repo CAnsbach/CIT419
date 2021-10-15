@@ -29,6 +29,7 @@ public class AI_GeneralController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Dieing");
+        StopAllCoroutines();
         gc.UpdateScore(score);
         Debug.Log("Score is now: " + gc.GetScore());
         Destroy(gameObject);

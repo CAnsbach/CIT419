@@ -5,28 +5,41 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
+
+
 public class AI_MLABoss : Agent
 {
+    
     [SerializeField] private Transform target;
     [SerializeField] private Material win;
     [SerializeField] private Material lose;
-    [SerializeField] private Material defaultMat;
     [SerializeField] private MeshRenderer floorMeshRenderer;
-    public enum State { Chase, Attack };
-    State currentState;
 
     public GameController gc;
-    public int health, score = 100;
-    const int damage = 10;
-    bool canBlock = true;
-    bool blocking = false;
-    const float blockCooldown = 5f, blockDuration = 3f;
-    float stopWatch, blockStop, x, z, currentDistance;
-    bool enemyInRange;
+    public int health = 100, score = 100;
+    public bool testing;
+
     GameObject enemy;
+
+    const int damage = 10;
+    const float blockCooldown = 5f, blockDuration = 3f, moveSpeed = 5f, attackCooldown = 1f;
+
+    bool canBlock = true, blocking = false, canAttack = true, enemyInRange;
+    float stopWatch, blockStop, attackTracker;
 
     private void Update()
     {
+        if (enemy == null)
+        {
+            enemyInRange = false;
+        }
+
+        if (!canAttack && Time.time > attackTracker)
+        {
+            canAttack = true;
+            Debug.Log("Can attack again");
+        }
+
         if (!canBlock && Time.time > stopWatch)
         {
             canBlock = true;
@@ -47,6 +60,12 @@ public class AI_MLABoss : Agent
             enemyInRange = true;
             enemy = other.gameObject;
         }
+
+        else if (other.gameObject.CompareTag("Player"))
+        {
+            enemyInRange = true;
+            enemy = other.gameObject;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -56,22 +75,34 @@ public class AI_MLABoss : Agent
             enemyInRange = false;
             enemy = null;
         }
+
+        else if (other.gameObject.CompareTag("Player"))
+        {
+            enemyInRange = true;
+            enemy = null;
+        }
     }
 
     public override void OnEpisodeBegin()
     {
-        Debug.Log("Episode Begin");
-        transform.position = new Vector3(-43.6f, 0.5f, 41.4f);
-        health = 100;
-        floorMeshRenderer.material = defaultMat;
-        gc.NextWave();
+        SetReward(0f);
+        if (testing)
+        {
+            health = 100;
+            transform.position = new Vector3(-43.6f, 0.5f, 41.4f);
+            gc.NextTrainingWave();
+        } 
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        if (target == null)
+        if (testing && target == null)
         {
-            target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
+            if (testing)
+            {
+                target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
+
+            }
 
             sensor.AddObservation(target.position);
         }
@@ -81,20 +112,16 @@ public class AI_MLABoss : Agent
         }
         sensor.AddObservation(transform.position);
         sensor.AddObservation(enemyInRange);
+        sensor.AddObservation(canAttack);
+        sensor.AddObservation(canBlock);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        x = actions.ContinuousActions[0];
-        z = actions.ContinuousActions[1];
-
-        currentDistance = Vector3.Distance(transform.position, target.position);
-
         int state = actions.DiscreteActions[0];
 
         if (state == 0)
         {
-
             Debug.Log("Chasing");
             Chase();
         }
@@ -108,67 +135,106 @@ public class AI_MLABoss : Agent
             Debug.Log("Block");
             Block();
         }
+        else if (state == 3)
+        {
+            Debug.Log("Wait");
+            Wait();
+        }
     }
-
-    public override void Heuristic(in ActionBuffers actionsOut)
-    {
-        ActionSegment<float> continuous = actionsOut.ContinuousActions;
-        continuous[0] = Input.GetAxisRaw("Horizontal");
-        continuous[1] = Input.GetAxisRaw("Vertical");
-
-        //ActionSegment<int> discrete = actionsOut.DiscreteActions;
-    }
-
-
 
     void Attack()
     {
         //Attack in front, punish if nothing there, reward on hit.
-        //If there is no enemy in range, punish
-        if (!enemyInRange)
+        if (canAttack)
         {
-            AddReward(-10f);
+            //If there is no enemy in range, punish
+            if (!enemyInRange || enemy == null)
+            {
+                AddReward(-.5f);
+            }
+
+            else
+            {
+                //If the enemy is an enemy, hit them and check if they are still alive
+                if (enemy.CompareTag("Player") || enemy.CompareTag("TestEnemy"))
+                {
+                    if(enemy.GetComponent<AI_BasicRanged>() != null)
+                    {
+                        enemy.GetComponent<AI_BasicRanged>().Hit(damage);
+                        canAttack = false;
+
+                        attackTracker = Time.time + attackCooldown;
+
+                    }
+                    else if (enemy.GetComponent<AI_BasicMelee>() != null)
+                    {
+                        enemy.GetComponent<AI_BasicMelee>().Hit(damage);
+
+                        attackTracker = Time.time + attackCooldown;
+                    }
+                    else
+                    {
+                        enemy.GetComponent<PlayerController>().TakeDamage(damage);
+
+                        attackTracker = Time.time + attackCooldown;
+                    }
+                    
+
+                    //If they are not alive, reward the AI and end the episode.
+                    if (testing)
+                    {
+                        if (CheckForEnemies())
+                        {
+                            EnemyKilled();
+                        }
+                        else
+                        {
+                            target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
+                        }
+                    }
+                    
+                }
+                AddReward(10f);
+            }
         }
 
         else
         {
-            //If the enemy is an enemy, hit them and check if they are still alive
-            if (enemy.CompareTag("TestEnemy"))
-            {
-                enemy.GetComponent<AI_BasicMelee>().Hit(damage);
+            AddReward(-.3f);
+        }
+    }
 
-                //If they are not alive, reward the AI and end the episode.
-                if (CheckForEnemies())
-                {
-                    EnemyKilled();
-                }
-                else
-                {
-                    target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
-                }
-            }
-            AddReward(10f);
+    void Block()
+    {
+        if (canBlock)
+        {
+            canBlock = false;
+            blocking = true;
+
+            stopWatch = Time.time + blockCooldown;
+            blockStop = Time.time + blockDuration;
+        }
+        else
+        {
+            AddReward(-.1f);
         }
     }
 
     void Chase()
     {
-        //Chase the enemy, punish if moving away, reward if getting closer.
-        float moveSpeed = 2f;
-
-        transform.position += new Vector3(x, 0, z) * Time.deltaTime * moveSpeed;
-
-        transform.LookAt(target.position);
-
-        //If you are moving away, punish
-        if (Vector3.Distance(transform.position, target.position) > currentDistance)
+        if (target != null)
         {
-            AddReward(-1f);
+            transform.LookAt(target.position);
+
+            transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
         }
-        //Else, reward
-        else
+    }
+
+    void Wait()
+    {
+        if (Vector3.Distance(target.position, transform.position) > 3f)
         {
-            AddReward(1f);
+            AddReward(-10f);
         }
     }
 
@@ -179,7 +245,7 @@ public class AI_MLABoss : Agent
             if (damage < health)
             {
                 health -= damage;
-                AddReward(-5f);
+                AddReward(-.1f);
             }
             else
             {
@@ -200,45 +266,39 @@ public class AI_MLABoss : Agent
         Debug.Log("Dieing");
         floorMeshRenderer.material = lose;
         SetReward(-100f);
+        Debug.Log(GetCumulativeReward());
 
-        foreach(GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+        if (testing)
         {
-            Destroy(enemies);
+            foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+            {
+                Destroy(enemies);
+            }
+            EndEpisode();
         }
 
-        EndEpisode();
-
-        //gc.UpdateScore(score);
-        //Debug.Log("Score is now: " + gc.GetScore());
-        //Destroy(gameObject);
+        else
+        {
+            gc.UpdateScore(score);
+            Debug.Log("Score is now: " + gc.GetScore());
+            Destroy(gameObject);
+        }
     }
 
     void EnemyKilled()
     {
-        floorMeshRenderer.material = win;
-        SetReward(100f);
-
-        foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+        if (testing)
         {
-            Destroy(enemies);
-        }
+            Debug.Log("Enemy Killed :)");
+            floorMeshRenderer.material = win;
+            SetReward(100f);
+            Debug.Log(GetCumulativeReward());
+            foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
+            {
+                Destroy(enemies);
+            }
 
-        EndEpisode();
-    }
-
-    void Block()
-    {
-        if (canBlock)
-        {
-            canBlock = false;
-            blocking = true;
-
-            stopWatch = Time.time + blockCooldown;
-            blockStop = Time.time + blockDuration;
-        }
-        else
-        {
-            AddReward(-10f);
+            EndEpisode();        
         }
     }
 

@@ -15,9 +15,11 @@ public class AI_BasicRanged : AI_GeneralController
     Transform playerT;
     NavMeshAgent agent;
 
+    const float range = 20f;
+
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("MLBoss");
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);
@@ -27,11 +29,11 @@ public class AI_BasicRanged : AI_GeneralController
     {
         float distance = Vector3.Distance(playerT.position, transform.position);
 
-        if (distance <= 10f && currentState != State.Shoot)
+        if (distance <= range && currentState != State.Shoot)
         {
             ChangeStates(State.Shoot);
         }
-        else if (distance > 10f && currentState != State.Chase)
+        else if (distance > range && currentState != State.Chase)
         {
             ChangeStates(State.Chase);
         }
@@ -85,7 +87,7 @@ public class AI_BasicRanged : AI_GeneralController
 
             bulletGO.transform.forward = shooter.forward;
 
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.4f);
 
             transform.LookAt(player.transform.position);
         }
