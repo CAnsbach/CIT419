@@ -11,9 +11,9 @@ public class EnemyBulletController : MonoBehaviour
         Destroy(gameObject, 15f);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        transform.position = transform.position + transform.forward * 20f * Time.deltaTime;
+        transform.position += transform.forward * 20f * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -118,27 +118,24 @@ public class AI_MLABoss : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        int state = actions.DiscreteActions[0];
+        int chase = actions.DiscreteActions[0];
+        int attack = actions.DiscreteActions[1];
+        int block = actions.DiscreteActions[2];
 
-        if (state == 0)
+        if (chase == 1)
         {
             Debug.Log("Chasing");
             Chase();
         }
-        else if (state == 1)
+        else if (attack == 1)
         {
             Debug.Log("Attack");
             Attack();
         }
-        else if (state == 2)
+        else if (block == 1)
         {
             Debug.Log("Block");
             Block();
-        }
-        else if (state == 3)
-        {
-            Debug.Log("Wait");
-            Wait();
         }
     }
 
@@ -169,12 +166,14 @@ public class AI_MLABoss : Agent
                     else if (enemy.GetComponent<AI_BasicMelee>() != null)
                     {
                         enemy.GetComponent<AI_BasicMelee>().Hit(damage);
+                        canAttack = false;
 
                         attackTracker = Time.time + attackCooldown;
                     }
                     else
                     {
                         enemy.GetComponent<PlayerController>().TakeDamage(damage);
+                        canAttack = false;
 
                         attackTracker = Time.time + attackCooldown;
                     }
@@ -227,14 +226,6 @@ public class AI_MLABoss : Agent
             transform.LookAt(target.position);
 
             transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
-        }
-    }
-
-    void Wait()
-    {
-        if (Vector3.Distance(target.position, transform.position) > 3f)
-        {
-            AddReward(-10f);
         }
     }
 

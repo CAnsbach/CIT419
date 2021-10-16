@@ -1,0 +1,38 @@
+{
+    "MLBoss": {
+        "checkpoints": [
+            {
+                "steps": 499960,
+                "file_path": "results\\GameTraining\\MLBoss\\MLBoss-499960.onnx",
+                "reward": 99.96551837232606,
+                "creation_time": 1634420878.0481696,
+                "auxillary_file_paths": [
+                    "results\\GameTraining\\MLBoss\\MLBoss-499960.pt"
+                ]
+            },
+            {
+                "steps": 500024,
+                "file_path": "results\\GameTraining\\MLBoss\\MLBoss-500024.onnx",
+                "reward": 99.96551837232606,
+                "creation_time": 1634420878.272735,
+                "auxillary_file_paths": [
+                    "results\\GameTraining\\MLBoss\\MLBoss-500024.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500024,
+            "file_path": "results\\GameTraining\\MLBoss.onnx",
+            "reward": 99.96551837232606,
+            "creation_time": 1634420878.272735,
+            "auxillary_file_paths": [
+                "results\\GameTraining\\MLBoss\\MLBoss-500024.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.27.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

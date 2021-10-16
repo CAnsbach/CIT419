@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class VolumeSlider : MonoBehaviour
 {
 
-    public AudioMixer mixer;
+    public AudioSource audio;
     Slider volumeSlider;
     TMP_Text percentage;
 
@@ -29,9 +29,8 @@ public class VolumeSlider : MonoBehaviour
 
     void SetLevel(float value)
     {
-        //mixer.SetFloat("MusicVol", Mathf.Log10(value) * 20);
-
         percentage.SetText((Math.Round(value / volumeSlider.maxValue, 2) * 100).ToString() + '%');
+        audio.volume = value;        
         PlayerPrefs.SetFloat("VolumeLevel", value);
         PlayerPrefs.Save();
     }

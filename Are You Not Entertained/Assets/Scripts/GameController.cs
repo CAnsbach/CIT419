@@ -85,6 +85,10 @@ public class GameController : MonoBehaviour
         GameObject[] enemySpawners = GameObject.FindGameObjectsWithTag("Spawner");
 
         enemySpawners[Random.Range(0, enemySpawners.Length)].GetComponent<Spawner>().SpawnEnemy();
+    }
 
+    public void VolumeUpdated()
+    {
+        float volume = PlayerPrefs.GetFloat("VolumeLevel", .75f);
     }
 }

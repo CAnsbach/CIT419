@@ -14,12 +14,24 @@ public class AI_BasicMelee : AI_GeneralController
     Transform playerT;
     NavMeshAgent agent;
 
+    const float attackCooldown = 1f;
+    float attackTracker;
+    bool canAttack = true;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("MLBoss");
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);
+    }
+
+    private void Update()
+    {
+        if (!canAttack && Time.time > attackTracker)
+        {
+            canAttack = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -78,16 +90,25 @@ public class AI_BasicMelee : AI_GeneralController
 
         while (currentState == State.Attack && player != null)
         {
-            if (player.CompareTag("Player"))
-            {
-                player.GetComponent<PlayerController>().TakeDamage(damage);
-                
-            }
 
-            else
+            if (canAttack)
             {
-                //Debug.Log("Attacking " + player.tag);
-                player.GetComponent<AI_MLABoss>().Hit(damage);
+                if (player.CompareTag("Player"))
+                {
+                    player.GetComponent<PlayerController>().TakeDamage(damage);
+                    canAttack = false;
+
+                    attackTracker = Time.time + attackCooldown;
+                }
+
+                else
+                {
+                    //Debug.Log("Attacking " + player.tag);
+                    player.GetComponent<AI_MLABoss>().Hit(damage);
+                    canAttack = false;
+
+                    attackTracker = Time.time + attackCooldown;
+                }
             }
 
             yield return new WaitForSeconds(.5f);

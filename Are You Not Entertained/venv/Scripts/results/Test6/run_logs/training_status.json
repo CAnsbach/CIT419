@@ -1,0 +1,38 @@
+{
+    "MLBoss": {
+        "checkpoints": [
+            {
+                "steps": 139106,
+                "file_path": "results\\Test6\\MLBoss\\MLBoss-139106.onnx",
+                "reward": 72.1000015894572,
+                "creation_time": 1634410018.0050213,
+                "auxillary_file_paths": [
+                    "results\\Test6\\MLBoss\\MLBoss-139106.pt"
+                ]
+            },
+            {
+                "steps": 153603,
+                "file_path": "results\\Test6\\MLBoss\\MLBoss-153603.onnx",
+                "reward": 60.99310449074055,
+                "creation_time": 1634410379.869891,
+                "auxillary_file_paths": [
+                    "results\\Test6\\MLBoss\\MLBoss-153603.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 153603,
+            "file_path": "results\\Test6\\MLBoss.onnx",
+            "reward": 60.99310449074055,
+            "creation_time": 1634410379.869891,
+            "auxillary_file_paths": [
+                "results\\Test6\\MLBoss\\MLBoss-153603.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.27.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}
