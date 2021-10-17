@@ -533,42 +533,6 @@ PrefabInstance:
       propertyPath: floorMeshRenderer
       value: 
       objectReference: {fileID: 1684963591}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.VectorObservationSize
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSize.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSize.Array.data[1]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.VectorActionSize.Array.data[2]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958469484, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
-      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7441329154295755369, guid: 0c8a5cd5d78c4bd47970280a0a2ef522, type: 3}
       propertyPath: m_RootOrder
       value: 3

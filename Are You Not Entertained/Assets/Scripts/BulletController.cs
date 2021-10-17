@@ -7,9 +7,14 @@ public class BulletController : MonoBehaviour
 
     const int damage = 10;
 
+    private void Start()
+    {
+        Destroy(gameObject, 15f);
+    }
+
     void Update()
     {
-        transform.position = transform.position + transform.forward * 20f * Time.deltaTime;
+        transform.position += transform.forward * 20f * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -28,7 +33,7 @@ public class BulletController : MonoBehaviour
 
         else if (collision.gameObject.tag.Equals("MLBoss"))
         {
-            collision.gameObject.GetComponent<AI_MLBoss>().Hit(damage);
+            collision.gameObject.GetComponent<AI_MLABoss>().Hit(damage);
             Gone();
         }
         else

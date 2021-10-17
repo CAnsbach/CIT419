@@ -140,18 +140,9 @@ public class PlayerController : MonoBehaviour
 
             else if (hitObject.tag.Equals("MLBoss"))
             {
-                hitObject.GetComponent<AI_MLBoss>().Hit(meleeDamage);
-            }
-            else
-            {
-                Debug.Log("I hit: " + hitObject.tag);
+                hitObject.GetComponent<AI_MLABoss>().Hit(meleeDamage);
             }
         }
-        else
-        {
-            Debug.Log("None");
-        }
-        
     }
 
     public void TakeDamage(int damage)

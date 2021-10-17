@@ -3,23 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
-public class AI_BasicRanged : AI_GeneralController
+public class AI_BasicRanged : MonoBehaviour
 {
     public enum State { Chase, Shoot};
     public State currentState;
     public GameObject bullet;
     public Transform shooter;
 
+    bool training;
+
     GameObject player;
     Transform playerT;
     NavMeshAgent agent;
 
     const float range = 20f;
+    GameController gc;
+    int health = 50, score = 10;
+
+    private void Awake()
+    {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("MLBoss");
+        gc.AddSelf(gameObject);
+
+        training = SceneManager.GetActiveScene().name == "MLTraining";
+
+        if (training)
+        {
+            player = GameObject.FindGameObjectWithTag("MLBoss");
+        }
+
+        else
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);
@@ -37,6 +60,27 @@ public class AI_BasicRanged : AI_GeneralController
         {
             ChangeStates(State.Chase);
         }
+    }
+
+    public void Hit(int damage)
+    {
+        if (damage >= health)
+        {
+            Die();
+        }
+
+        else
+        {
+            health -= damage;
+        }
+    }
+
+    public void Die()
+    {
+        StopAllCoroutines();
+        gc.UpdateScore(score);
+        gc.RemoveSelf(gameObject);
+        Destroy(gameObject);
     }
 
 

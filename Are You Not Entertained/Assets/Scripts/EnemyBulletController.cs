@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyBulletController : MonoBehaviour
 {
     const int damage = 5;
+    bool training;
 
     private void Start()
     {
         Destroy(gameObject, 15f);
+        training = SceneManager.GetActiveScene().name == "MLTraining";
     }
 
     void FixedUpdate()
@@ -23,7 +26,7 @@ public class EnemyBulletController : MonoBehaviour
             collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
             Gone();
         }
-        else if (collision.gameObject.tag.Equals("MLBoss"))
+        else if (collision.gameObject.tag.Equals("MLBoss") && training)
         {
             collision.gameObject.GetComponent<AI_MLABoss>().Hit(damage);
             Gone();

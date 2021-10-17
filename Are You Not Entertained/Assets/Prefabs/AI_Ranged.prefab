@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 768369680360474539}
   m_Layer: 0
   m_Name: AI_Ranged
-  m_TagString: TestEnemy
+  m_TagString: EnemyRanged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,3 +183,4 @@ MonoBehaviour:
   currentState: 0
   bullet: {fileID: 4098890490973202898, guid: 99f6b3797efa5c5418117996909cac5f, type: 3}
   shooter: {fileID: 1424007152}
+  training: 0

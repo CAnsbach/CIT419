@@ -4,8 +4,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-
-
+using UnityEngine.SceneManagement;
 
 public class AI_MLABoss : Agent
 {
@@ -17,15 +16,23 @@ public class AI_MLABoss : Agent
 
     public GameController gc;
     public int health = 100, score = 100;
-    public bool testing;
+    public bool training;
 
-    GameObject enemy;
+    public GameObject enemy;
 
-    const int damage = 10;
-    const float blockCooldown = 5f, blockDuration = 3f, moveSpeed = 5f, attackCooldown = 1f;
+    public const int damage = 10;
+    public const float blockCooldown = 5f, blockDuration = 3f, moveSpeed = 5f, attackCooldown = 1f;
 
-    bool canBlock = true, blocking = false, canAttack = true, enemyInRange;
-    float stopWatch, blockStop, attackTracker;
+    public bool canBlock = true, blocking = false, canAttack = true, enemyInRange;
+    public float stopWatch, blockStop, attackTracker;
+
+    private void Start()
+    {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        training = SceneManager.GetActiveScene().name == "MLTraining";
+        gc.AddSelf(gameObject);
+    }
 
     private void Update()
     {
@@ -86,9 +93,10 @@ public class AI_MLABoss : Agent
     public override void OnEpisodeBegin()
     {
         SetReward(0f);
-        if (testing)
+        health = 100;
+        if (training)
         {
-            health = 100;
+            
             transform.position = new Vector3(-43.6f, 0.5f, 41.4f);
             gc.NextTrainingWave();
         } 
@@ -96,13 +104,9 @@ public class AI_MLABoss : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        if (testing && target == null)
+        if (training && target == null)
         {
-            if (testing)
-            {
-                target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
-
-            }
+            target = GameObject.FindGameObjectsWithTag("TestEnemy")[0].transform;
 
             sensor.AddObservation(target.position);
         }
@@ -180,7 +184,7 @@ public class AI_MLABoss : Agent
                     
 
                     //If they are not alive, reward the AI and end the episode.
-                    if (testing)
+                    if (training)
                     {
                         if (CheckForEnemies())
                         {
@@ -254,31 +258,33 @@ public class AI_MLABoss : Agent
 
     void Die()
     {
-        Debug.Log("Dieing");
-        floorMeshRenderer.material = lose;
-        SetReward(-100f);
-        Debug.Log(GetCumulativeReward());
-
-        if (testing)
+        if (training)
         {
             foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("TestEnemy"))
             {
                 Destroy(enemies);
             }
-            EndEpisode();
+
+            Debug.Log("Dieing");
+            floorMeshRenderer.material = lose;
+
         }
+
 
         else
         {
+            SetReward(-100f);
+            Debug.Log(GetCumulativeReward());
             gc.UpdateScore(score);
-            Debug.Log("Score is now: " + gc.GetScore());
+            gc.RemoveSelf(gameObject);
+            EndEpisode();
             Destroy(gameObject);
         }
     }
 
     void EnemyKilled()
     {
-        if (testing)
+        if (training)
         {
             Debug.Log("Enemy Killed :)");
             floorMeshRenderer.material = win;

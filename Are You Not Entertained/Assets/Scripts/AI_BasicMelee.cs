@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
-public class AI_BasicMelee : AI_GeneralController
+public class AI_BasicMelee : MonoBehaviour
 {
     public enum State { Chase, Attack };
     public State currentState;
@@ -14,13 +15,35 @@ public class AI_BasicMelee : AI_GeneralController
     Transform playerT;
     NavMeshAgent agent;
 
+    GameController gc;
+    int health = 50, score = 10;
+
     const float attackCooldown = 1f;
     float attackTracker;
     bool canAttack = true;
+    bool training;
+
+    private void Awake()
+    {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("MLBoss");
+        gc.AddSelf(gameObject);
+
+        training = SceneManager.GetActiveScene().name == "MLTraining";
+
+        if (training)
+        {
+            player = GameObject.FindGameObjectWithTag("MLBoss");
+        }
+
+        else
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         ChangeStates(State.Chase);
@@ -36,7 +59,7 @@ public class AI_BasicMelee : AI_GeneralController
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MLBoss"))
+        if (other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("MLBoss") && training))
         {
             ChangeStates(State.Attack);
         }
@@ -44,10 +67,31 @@ public class AI_BasicMelee : AI_GeneralController
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MLBoss"))
+        if (other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("MLBoss") && training))
         {
             ChangeStates(State.Chase);
         }
+    }
+
+    public void Hit(int damage)
+    {
+        if (damage >= health)
+        {
+            Die();
+        }
+
+        else
+        {
+            health -= damage;
+        }
+    }
+
+    public void Die()
+    {
+        StopAllCoroutines();
+        gc.UpdateScore(score);
+        gc.RemoveSelf(gameObject);
+        Destroy(gameObject);
     }
 
     private void ChangeStates(State current)
@@ -101,9 +145,8 @@ public class AI_BasicMelee : AI_GeneralController
                     attackTracker = Time.time + attackCooldown;
                 }
 
-                else
+                else if (training)
                 {
-                    //Debug.Log("Attacking " + player.tag);
                     player.GetComponent<AI_MLABoss>().Hit(damage);
                     canAttack = false;
 
