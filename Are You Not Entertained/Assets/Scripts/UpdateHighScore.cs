@@ -20,17 +20,28 @@ public class UpdateHighScore : MonoBehaviour
         ScoreUpdate();
     }
 
+    /// <summary>
+    /// Starts the coroutine used to update the user's high score on the website.
+    /// </summary>
+
     void ScoreUpdate()
     {
         StartCoroutine("UpdateScore");
     }
 
+    /// <summary>
+    /// Coroutine used to update the user's high score
+    /// </summary>
+    /// <returns></returns>
     IEnumerator UpdateScore()
     {
+        //Notify the user that their high score is being updated
         feedback.SetText("Updating Score....");
-        Debug.Log("Updating Score....");
+        
+        //User to have thier high score updated.
         usernameString = gc.getUsername();
 
+        //Form to provide the website with the necessary data.
         WWWForm form = new WWWForm();
         form.AddField("txtUserName", usernameString);
         form.AddField("intScore", gc.GetScore());
@@ -39,12 +50,13 @@ public class UpdateHighScore : MonoBehaviour
         {
             yield return www.SendWebRequest();
 
-
-
+            //If the connection was not successful, notify the user.
             if (www.result != UnityWebRequest.Result.Success)
             {
                 feedback.SetText("High score update not successful.");
             }
+
+            //Else, get the feedback from the website and display it to the user.
             else
             {
                 string result = www.downloadHandler.text;
@@ -52,6 +64,7 @@ public class UpdateHighScore : MonoBehaviour
                 feedback.SetText(result);
             }
 
+            //Score does not need to be updated anymore.
             gc.updateScore = false;
         }
     }

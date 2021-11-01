@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class AI_BasicMelee : MonoBehaviour
 {
-    public enum State { Chase, Attack };
+    public enum State { Chase, Attack };        //States for the state machine
     public State currentState;
     int damage = 10;
 
@@ -30,15 +30,18 @@ public class AI_BasicMelee : MonoBehaviour
 
     private void Start()
     {
-        gc.AddSelf(gameObject);
+        gc.AddSelf(gameObject);         //Add self to the list of enemies
 
+        //Determine if the ML AI is training
         training = SceneManager.GetActiveScene().name == "MLTraining";
 
+        //If it is training, the "player" is the ML AI
         if (training)
         {
             player = GameObject.FindGameObjectWithTag("MLBoss");
         }
 
+        //Else, target the player
         else
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -46,11 +49,12 @@ public class AI_BasicMelee : MonoBehaviour
         
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
-        ChangeStates(State.Chase);
+        ChangeStates(State.Chase);                  //Start in the chase state
     }
 
     private void Update()
     {
+        //If the AI can't attack and the cooldown is done, the AI can attack again
         if (!canAttack && Time.time > attackTracker)
         {
             canAttack = true;
@@ -59,6 +63,7 @@ public class AI_BasicMelee : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Determine what entered the trigger and act accordingly
         if (other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("MLBoss") && training))
         {
             ChangeStates(State.Attack);
@@ -67,12 +72,17 @@ public class AI_BasicMelee : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        //Determine what left the trigger and act accordingly
         if (other.gameObject.CompareTag("Player") || (other.gameObject.CompareTag("MLBoss") && training))
         {
             ChangeStates(State.Chase);
         }
     }
 
+    /// <summary>
+    /// Method used to have the AI take damage
+    /// </summary>
+    /// <param name="damage">Damage for the AI to take</param>
     public void Hit(int damage)
     {
         if (damage >= health)
@@ -86,14 +96,21 @@ public class AI_BasicMelee : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method used to kill the AI
+    /// </summary>
     public void Die()
     {
-        StopAllCoroutines();
-        gc.UpdateScore(score);
-        gc.RemoveSelf(gameObject);
-        Destroy(gameObject);
+        StopAllCoroutines();                //Stop chasing or attacking
+        gc.UpdateScore(score);              //Update the player's score
+        gc.RemoveSelf(gameObject);          //Remove self from the enemy list
+        Destroy(gameObject);                //Destroy the GameObject
     }
 
+    /// <summary>
+    /// State machine
+    /// </summary>
+    /// <param name="current">State to change to</param>
     private void ChangeStates(State current)
     {
         if (current == State.Attack)
@@ -110,6 +127,10 @@ public class AI_BasicMelee : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to chase the target
+    /// </summary>
+    /// <returns></returns>
     IEnumerator AI_Chase()
     {
         while (currentState == State.Chase && player != null)
@@ -128,13 +149,17 @@ public class AI_BasicMelee : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Coroutine to attack the target
+    /// </summary>
+    /// <returns></returns>
     IEnumerator AI_Attack()
     {
         agent.SetDestination(gameObject.transform.position);
 
         while (currentState == State.Attack && player != null)
         {
-
+            //If the AI can attack, do so
             if (canAttack)
             {
                 if (player.CompareTag("Player"))
@@ -142,7 +167,7 @@ public class AI_BasicMelee : MonoBehaviour
                     player.GetComponent<PlayerController>().TakeDamage(damage);
                     canAttack = false;
 
-                    attackTracker = Time.time + attackCooldown;
+                    attackTracker = Time.time + attackCooldown;     //Set the cooldown
                 }
 
                 else if (training)
@@ -150,7 +175,7 @@ public class AI_BasicMelee : MonoBehaviour
                     player.GetComponent<AI_MLABoss>().Hit(damage);
                     canAttack = false;
 
-                    attackTracker = Time.time + attackCooldown;
+                    attackTracker = Time.time + attackCooldown;     //Set the cooldown
                 }
             }
 

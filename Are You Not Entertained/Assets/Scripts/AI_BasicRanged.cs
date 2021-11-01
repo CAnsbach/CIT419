@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class AI_BasicRanged : MonoBehaviour
 {
-    public enum State { Chase, Shoot};
+    public enum State { Chase, Shoot};          //States for the state machine
     public State currentState;
     public GameObject bullet;
     public Transform shooter;
@@ -29,10 +29,11 @@ public class AI_BasicRanged : MonoBehaviour
 
     private void Start()
     {
-        gc.AddSelf(gameObject);
+        gc.AddSelf(gameObject);                                         //Add self to the enemy list
 
-        training = SceneManager.GetActiveScene().name == "MLTraining";
+        training = SceneManager.GetActiveScene().name == "MLTraining";  //Determine if training
 
+        //Set the target as necessary based on if the ML AI is training or not
         if (training)
         {
             player = GameObject.FindGameObjectWithTag("MLBoss");
@@ -45,11 +46,12 @@ public class AI_BasicRanged : MonoBehaviour
 
         playerT = player.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
-        ChangeStates(State.Chase);
+        ChangeStates(State.Chase);                                      //Default state is chase
     }
 
     private void FixedUpdate()
     {
+        //If the player get's in firing range, change from chase to shoot
         float distance = Vector3.Distance(playerT.position, transform.position);
 
         if (distance <= range && currentState != State.Shoot)
@@ -62,6 +64,10 @@ public class AI_BasicRanged : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method used to have the AI take damage
+    /// </summary>
+    /// <param name="damage">Amount of damage to take</param>
     public void Hit(int damage)
     {
         if (damage >= health)
@@ -75,15 +81,21 @@ public class AI_BasicRanged : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method used to kill the AI
+    /// </summary>
     public void Die()
     {
         StopAllCoroutines();
-        gc.UpdateScore(score);
-        gc.RemoveSelf(gameObject);
-        Destroy(gameObject);
+        gc.UpdateScore(score);              //Update the player's score
+        gc.RemoveSelf(gameObject);          //Remove self from enemy list
+        Destroy(gameObject);                //Destroy self
     }
 
-
+    /// <summary>
+    /// State machine
+    /// </summary>
+    /// <param name="current">Current state</param>
     private void ChangeStates(State current)
     {
         if (current == State.Chase)
@@ -100,9 +112,13 @@ public class AI_BasicRanged : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine used to chase the target
+    /// </summary>
+    /// <returns></returns>
     IEnumerator AI_Chase()
     {
-        agent.isStopped = false;
+        agent.isStopped = false;                                //Agent is no longer stopped
         while (currentState == State.Chase && player != null)
         {
             try
@@ -122,9 +138,10 @@ public class AI_BasicRanged : MonoBehaviour
 
     IEnumerator AI_Shoot()
     {
-        agent.isStopped = true;
+        agent.isStopped = true;                                 //Stop the agent to shoot at the player
         while (player != null)
         {
+            //Look at the player, instantiate a bullet, and set the bullet's direection
             transform.LookAt(player.transform.position);
 
             GameObject bulletGO = Instantiate(bullet, shooter.position, Quaternion.identity);

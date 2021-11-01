@@ -15,6 +15,9 @@ public class GetUsername : MonoBehaviour
         UpdateWelcome();
     }
 
+    /// <summary>
+    /// Method used to update the message shown in the main menu
+    /// </summary>
     void UpdateWelcome()
     {
         UsernameIntro.text = "Welcome, " + gc.getUsername() + "!";

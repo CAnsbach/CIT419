@@ -162,7 +162,7 @@ MonoBehaviour:
   target: {fileID: 0}
   win: {fileID: 2100000, guid: 2c5f5b987a6db804381770cc3e4b911d, type: 2}
   lose: {fileID: 2100000, guid: 6e2c910cc7b214146bea623d45470f2b, type: 2}
-  floorMeshRenderer: {fileID: 0}
+  floorMeshRenderer: {fileID: 2831327355024702974, guid: f3d1b6eed0f87c24fa66bb66e3ccabfd, type: 3}
   gc: {fileID: 0}
   health: 0
   score: 100
@@ -198,10 +198,10 @@ MonoBehaviour:
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 2003b66ef70a09941af42f7876493a4e, type: 3}
-  m_InferenceDevice: 1
+  m_InferenceDevice: 3
   m_BehaviorType: 2
   m_BehaviorName: MLBoss
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_ObservableAttributeHandling: 0
+  m_ObservableAttributeHandling: 2

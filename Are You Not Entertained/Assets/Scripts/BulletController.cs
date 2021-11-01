@@ -9,16 +9,19 @@ public class BulletController : MonoBehaviour
 
     private void Start()
     {
+        //Destroy this game object after 15 seconds
         Destroy(gameObject, 15f);
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        //Update the position of the bullet
         transform.position += transform.forward * 20f * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        //Determine what the bullet hit and act accordingly
         if (collision.gameObject.tag.Equals("EnemyMelee"))
         {
             collision.gameObject.GetComponent<AI_BasicMelee>().Hit(damage);
@@ -38,11 +41,13 @@ public class BulletController : MonoBehaviour
         }
         else
         {
-            Debug.Log("I hit: " + collision.gameObject.tag);
             Gone();
         }
     }
 
+    /// <summary>
+    /// Method used to destroy the game object when it collides with something
+    /// </summary>
     void Gone()
     {
         Destroy(gameObject);

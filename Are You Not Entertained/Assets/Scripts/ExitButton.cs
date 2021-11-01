@@ -14,6 +14,9 @@ public class ExitButton : MonoBehaviour
         btn.onClick.AddListener(Quit);
     }
 
+    /// <summary>
+    /// Method used to quit the game
+    /// </summary>
     void Quit()
     {
         Debug.Log("Exit");

@@ -10,6 +10,7 @@ public class AudioController : MonoBehaviour
     {
         audio = this.GetComponent<AudioSource>();
 
+        //Set the volume equal to the player's preferred volume level
         audio.volume = PlayerPrefs.GetFloat("VolumeLevel", .75f);
     }
 }

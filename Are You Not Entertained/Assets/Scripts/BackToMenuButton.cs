@@ -16,10 +16,13 @@ public class BackToMenuButton : MonoBehaviour
         btn.onClick.AddListener(GoToMainMenu);
     }
 
+    /// <summary>
+    /// Method used to load the main menu scene
+    /// </summary>
     void GoToMainMenu()
     {
-        Time.timeScale = 1;
-        gc.paused = false;
-        SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;                 //Restart time
+        gc.paused = false;                  //Game is no longer paused
+        SceneManager.LoadScene("MainMenu"); //Load the MainMenu Scene
     }
 }
