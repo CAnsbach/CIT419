@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2164325196133954762}
   - component: {fileID: -5192588070573169492}
   - component: {fileID: 418273040}
+  - component: {fileID: 864757423}
   m_Layer: 0
   m_Name: AI_Melee
   m_TagString: EnemyMelee
@@ -30,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2164325196133954773}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 449.1968, y: 85.62, z: 38.173637}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,7 +126,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5000001
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -151,3 +152,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gc: {fileID: 0}
   currentState: 0
+  player: {fileID: 0}
+--- !u!65 &864757423
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2164325196133954773}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 1}

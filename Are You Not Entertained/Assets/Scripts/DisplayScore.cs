@@ -10,6 +10,7 @@ public class DisplayScore : MonoBehaviour
     
     void Start()
     {
+        //Get the textbox and update it with the user's score
         scoreText = this.GetComponent<TMP_Text>();
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         scoreText.SetText("Score: " + gc.GetScore());

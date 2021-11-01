@@ -13,6 +13,9 @@ public class OptionsMenuButton : MonoBehaviour
         btn.onClick.AddListener(OpenOptions);
     }
 
+    /// <summary>
+    /// Method used to load the Options Menu Scene
+    /// </summary>
     void OpenOptions()
     {
         SceneManager.LoadScene("OptionsMenu");

@@ -1,0 +1,29 @@
+{
+    "MLBoss": {
+        "checkpoints": [
+            {
+                "steps": 6265,
+                "file_path": "results\\Test2\\MLBoss\\MLBoss-6265.onnx",
+                "reward": -13591.57142857143,
+                "creation_time": 1633966953.1624398,
+                "auxillary_file_paths": [
+                    "results\\Test2\\MLBoss\\MLBoss-6265.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 6265,
+            "file_path": "results\\Test2\\MLBoss.onnx",
+            "reward": -13591.57142857143,
+            "creation_time": 1633966953.1624398,
+            "auxillary_file_paths": [
+                "results\\Test2\\MLBoss\\MLBoss-6265.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.27.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

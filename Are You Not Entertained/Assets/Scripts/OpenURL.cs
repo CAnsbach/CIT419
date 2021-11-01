@@ -13,6 +13,7 @@ public class OpenURL : MonoBehaviour
         btn.onClick.AddListener(OpenRegistration);
     }
 
+    //Method used to take the user to the registration page of the website
     void OpenRegistration()
     {
         Application.OpenURL("https://citcapstones.com/CIT419/php/register.php");

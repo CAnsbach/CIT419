@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Update the camera's position to follow the given target.
         Vector3 chosenPosition = target.position + offset;
 
         transform.position = chosenPosition;
