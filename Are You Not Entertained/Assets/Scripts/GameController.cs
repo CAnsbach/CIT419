@@ -56,10 +56,10 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    int totalEnemies;                                   //Total enemies in wave
-    float betweenWaves = 10f, nextWaveTime = 0;         //Time between waves and time to start next wave
-    bool startNextWave = true, started = false;         //Booleans for determining if a new wave is to start or if the game has started
-    List<GameObject> enemies = new List<GameObject>();  //List of enemies (enemies remaining in current wave)
+    int totalEnemies;                                               //Total enemies in wave
+    float betweenWaves = 10f, nextWaveTime = 0;                     //Time between waves and time to start next wave
+    bool startNextWave = true, started = false, healPlayer = false; //Booleans for determining if a new wave is to start, the player should be healed, or if the game has started
+    List<GameObject> enemies = new List<GameObject>();              //List of enemies (enemies remaining in current wave)
     public TMP_Text scoreTxt;
 
     private void Start()
@@ -84,6 +84,19 @@ public class GameController : MonoBehaviour
             NextWave();
             startNextWave = false;
         }
+    }
+
+    /// <summary>
+    /// Setter and getter for the healPlayer boolean
+    /// </summary>
+    public void PlayerHealed()
+    {
+        healPlayer = false;
+    }
+
+    public bool ShouldHeal()
+    {
+        return healPlayer;
     }
 
     /// <summary>
@@ -115,7 +128,6 @@ public class GameController : MonoBehaviour
 
         SceneManager.LoadScene("Game"); //Load the Game scene
     }
-
 
     /// <summary>
     /// Method used to spawn the next wave
@@ -175,6 +187,7 @@ public class GameController : MonoBehaviour
         {
             nextWaveTime = Time.time + betweenWaves;
             startNextWave = true;
+            healPlayer = true;
         }
     }
 }

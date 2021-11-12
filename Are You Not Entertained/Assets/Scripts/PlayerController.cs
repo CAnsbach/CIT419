@@ -45,6 +45,13 @@ public class PlayerController : MonoBehaviour
             blockTxt.text = "Not Blocking";
         }
 
+        //If the player should be healed due to passing a wave, heal them and notify the gamecontroller.
+        if (gc.ShouldHeal())
+        {
+            Heal(10);
+            gc.PlayerHealed();
+        }
+
         //If the player's health is less than or equal to zero, kill them
         if(health <= 0)
         {
@@ -171,6 +178,25 @@ public class PlayerController : MonoBehaviour
             {
                 hitObject.GetComponent<AI_MLABoss>().Hit(meleeDamage);
             }
+        }
+    }
+
+    /// <summary>
+    /// Method used to heal the player
+    /// </summary>
+    /// <param name="health">Amount to heal the player</param>
+    public void Heal(int health)
+    {
+        //If the heal will put the player at or above 100, set their health to 100
+        if (this.health + health >= 100)
+        {
+            this.health = 100;                          //Set the health to 100
+            healthTxt.text = "Health: " + this.health;       //Update the UI
+        }
+        else
+        {
+            this.health += health;                      //Heal the player
+            healthTxt.text = "Health: " + this.health;       //Update the UI
         }
     }
 
